@@ -1,0 +1,4 @@
+visual_recsys/data/
+.venv/
+__pycache__/
+*.db
