@@ -1,6 +1,5 @@
-import os
-import sys
+import streamlit as st
+from visual_recsys.src.ui import render_dashboard
 
 if __name__ == '__main__':
-    print("Launching Visual E-Commerce Recommendation Dashboard...")
-    os.system("streamlit run visual_recsys/src/ui.py")
+    render_dashboard()
