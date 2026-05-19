@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraMarket | Premium Concept Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAFAFA; color: #18181B; }
+        .category-btn.active { color: #18181B; border-color: #18181B; font-weight: 600; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white border-b border-zinc-200 sticky top-0 z-50 px-8 py-4 flex flex-col items-center gap-4">
+        <div class="w-full flex justify-between items-center">
+            <div class="text-xs font-bold tracking-[0.2em] uppercase text-zinc-400">Studio Collection</div>
+            <div class="text-lg font-bold tracking-tight text-zinc-900">AURAMARKET</div>
+            <div class="text-xs font-medium text-zinc-500 tracking-wider">Bag (0)</div>
+        </div>
+        
+        <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 pt-2 border-t border-zinc-100 w-full text-xs uppercase tracking-widest text-zinc-400">
+            <button onclick="filterCategory('All')" class="category-btn active pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">All Collections</button>
+            <button onclick="filterCategory('Jeans')" class="category-btn pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">Jeans</button>
+            <button onclick="filterCategory('Shirt')" class="category-btn pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">Shirts</button>
+            <button onclick="filterCategory('Jumpsuit')" class="category-btn pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">Jumpsuits</button>
+            <button onclick="filterCategory('Jacket')" class="category-btn pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">Jackets</button>
+            <button onclick="filterCategory('Trousers')" class="category-btn pb-1 border-b-2 border-transparent hover:text-zinc-900 transition-all">Trousers</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        
+        <div id="discoveryView" class="mb-12">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 id="discoveryTitle" class="text-xl font-bold tracking-tight text-zinc-900">Explore Collection Arrays</h2>
+                    <p id="discoverySub" class="text-xs text-zinc-400 mt-1">Randomized initial items across local database clusters.</p>
+                </div>
+                <button onclick="resetAndShuffleFeed()" id="refreshFeedBtn" class="text-xs font-medium border border-zinc-200 px-3 py-1.5 rounded-lg hover:bg-zinc-50 transition-all">Reset & Shuffle</button>
+            </div>
+            
+            <div id="discoveryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+            
+            <div class="flex justify-center mt-12 mb-16">
+                <button onclick="renderGridFeed(true)" id="moreResultsBtn" class="bg-white border border-zinc-300 text-zinc-800 hover:bg-zinc-50 font-medium text-xs uppercase tracking-widest px-8 py-4 rounded-xl transition-all shadow-sm active:scale-[0.98]">
+                    More Results
+                </button>
+            </div>
+        </div>
+
+        <div id="focusedView" class="hidden">
+            <div class="mb-8">
+                <button onclick="goBackToGrid()" class="text-xs font-semibold text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-2">
+                    ← Back to browsing collection
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 bg-white border border-zinc-200 rounded-2xl p-4 flex justify-center">
+                    <img id="mainImg" src="" alt="Select a product" class="max-h-[550px] object-contain rounded-xl w-full opacity-0 transition-opacity duration-300">
+                </div>
+
+                <div class="lg:col-span-5 bg-white border border-zinc-200 rounded-2xl p-8 shadow-[0_1px_2px_-1px_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.04)]">
+                    <span id="mainBrand" class="inline-block bg-zinc-100 text-zinc-600 px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase rounded-md mb-4">BRAND</span>
+                    <h1 id="mainTitle" class="text-2xl font-bold tracking-tight text-zinc-900 leading-tight mb-2">Product Name</h1>
+                    
+                    <div class="flex items-center gap-2 mb-6">
+                        <span id="mainStars" class="text-zinc-900 text-sm tracking-tighter">★★★★★</span>
+                        <span id="mainRating" class="text-xs text-zinc-400">(0.00)</span>
+                    </div>
+
+                    <div id="mainPrice" class="text-3xl font-bold text-zinc-900 tracking-tight my-6">₹0.00</div>
+                    <div id="mainColour" class="text-sm text-zinc-500 mb-8">Variant: <span class="font-medium text-zinc-900">None</span></div>
+
+                    <button class="w-full bg-zinc-900 hover:bg-zinc-800 text-white text-sm font-semibold py-4 rounded-xl transition-all active:scale-[0.99] mb-6">
+                        Add to Shopping Bag
+                    </button>
+
+                    <div class="border-t border-zinc-100 pt-6 text-xs text-zinc-400 leading-relaxed space-y-2">
+                        <p>🟢 <b>In Stock</b> — Mapped inside local data warehouse vectors.</p>
+                        <p>🚚 <b>Express Delivery</b> — Ships within 24 hours via optimized distribution tracks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-24 border-t border-zinc-200 pt-16">
+                <h2 class="text-xl font-bold tracking-tight text-zinc-900 mb-8">Complete the Look</h2>
+                <div id="recGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000/api";
+        let localCatalog = [];
+        let activeCategory = "All";
+        let lastClickedProductId = null;
+        
+        let pageOffset = 0;
+        const BATCH_SIZE = 40; 
+
+        async function initializeCatalog() {
+            try {
+                const res = await fetch(`${API_BASE}/products`);
+                localCatalog = await res.json();
+                
+                renderGridFeed(false);
+            } catch (err) {
+                console.error("API link break:", err);
+            }
+        }
+
+        function filterCategory(category) {
+            activeCategory = category;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                // Enhanced matching to safely highlight navigation items across tabs cleanly
+                if (btn.innerText.toLowerCase().includes(category.toLowerCase()) || (category === 'All' && btn.innerText.includes('All'))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            document.getElementById('discoveryView').classList.remove('hidden');
+            document.getElementById('focusedView').classList.add('hidden');
+            
+            resetAndShuffleFeed();
+        }
+
+        function resetAndShuffleFeed() {
+            pageOffset = 0;
+            document.getElementById('discoveryGrid').innerHTML = '';
+            renderGridFeed(false);
+        }
+
+        function goBackToGrid() {
+            document.getElementById('discoveryView').classList.remove('hidden');
+            document.getElementById('focusedView').classList.add('hidden');
+        }
+
+        async function renderGridFeed(appendMode = false) {
+            const grid = document.getElementById('discoveryGrid');
+            const title = document.getElementById('discoveryTitle');
+            const subtitle = document.getElementById('discoverySub');
+            const shuffleBtn = document.getElementById('refreshFeedBtn');
+
+            if (!appendMode) {
+                grid.innerHTML = '';
+                pageOffset = 0;
+            }
+
+            let pool = [];
+
+            if (activeCategory === "All") {
+                shuffleBtn.classList.remove('hidden');
+                
+                if (lastClickedProductId) {
+                    const lastItem = localCatalog.find(p => p.id == lastClickedProductId);
+                    title.innerText = "Inspired by Your Recent Interest";
+                    subtitle.innerText = `Personalized discovery matrix built around: ${lastItem.brand} - ${lastItem.title.substring(0, 30)}...`;
+
+                    if (!appendMode) {
+                        grid.innerHTML += createProductCardMarkup(lastItem, "Last Viewed", "bg-zinc-900 text-white");
+                    }
+
+                    try {
+                        const res = await fetch(`${API_BASE}/recommendations/${lastClickedProductId}`);
+                        const recs = await res.json();
+                        pool = recs.map(r => ({ data: r, label: `Match: ${(r.confidence * 100).toFixed(1)}%`, style: "bg-emerald-50 text-emerald-700" }));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                } else {
+                    title.innerText = "Explore Collection Arrays";
+                    subtitle.innerText = "Randomized initial items across local database clusters.";
+                }
+
+                let randomPool = localCatalog.filter(p => p.id != lastClickedProductId);
+                randomPool = randomPool.sort(() => 0.5 - Math.random());
+                
+                randomPool.forEach(p => {
+                    pool.push({ data: p, label: "New Arrival", style: "bg-blue-50 text-blue-700" });
+                });
+
+            } else {
+                // Category Specific Routing (Handles Jeans, Shirts, Jumpsuits, Jackets, Trousers dynamic targets seamlessly)
+                shuffleBtn.classList.add('hidden');
+                
+                // Add trailing 's' for cleaner UI presentation headers when pluralizing
+                let displayHeaderName = activeCategory;
+                if (activeCategory === 'Shirt') displayHeaderName = 'Shirts';
+                if (activeCategory === 'Jumpsuit') displayHeaderName = 'Jumpsuits';
+                if (activeCategory === 'Jacket') displayHeaderName = 'Jackets';
+                
+                title.innerText = `${displayHeaderName} Collection`;
+                
+                // Strip singular or token properties for maximum catalog matches
+                const normalizedSearchToken = activeCategory.toLowerCase().replace(/s$/, "");
+                const filteredItems = localCatalog.filter(p => 
+                    p.title.toLowerCase().includes(normalizedSearchToken)
+                );
+                
+                subtitle.innerText = `Showing ${filteredItems.length} styles matching your selection.`;
+                
+                filteredItems.forEach(p => {
+                    pool.push({ data: p, label: displayHeaderName, style: "bg-zinc-100 text-zinc-700" });
+                });
+            }
+
+            const start = pageOffset * BATCH_SIZE;
+            const end = start + BATCH_SIZE;
+            const chunk = pool.slice(start, end);
+
+            if (chunk.length === 0 && appendMode) {
+                alert("You've reached the end of this collection!");
+                return;
+            }
+
+            chunk.forEach(item => {
+                grid.innerHTML += createProductCardMarkup(item.data, item.label, item.style);
+            });
+
+            pageOffset++;
+        }
+
+        function createProductCardMarkup(item, labelText, labelStyle) {
+            return `
+                <div class="bg-white border border-zinc-200 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-400 group cursor-pointer flex flex-col justify-between shadow-sm" onclick="handleFeedItemClick(${item.id})">
+                    <div>
+                        <div class="w-full aspect-[3/4] bg-zinc-50 rounded-xl overflow-hidden mb-4 flex items-center justify-center">
+                            <img src="${item.url}" class="object-contain h-full w-full mix-blend-multiply">
+                        </div>
+                        <span class="text-[9px] font-bold tracking-widest uppercase text-zinc-400 block mb-1">${item.brand}</span>
+                        <div class="text-xs font-semibold text-zinc-800 truncate mb-1 group-hover:text-black">${item.title}</div>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-zinc-900 mb-2">₹${Number(item.price).toLocaleString('en-IN')}</div>
+                        <span class="inline-block text-[10px] font-medium px-2 py-0.5 rounded ${labelStyle}">${labelText}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleFeedItemClick(id) {
+            lastClickedProductId = id;
+            
+            document.getElementById('discoveryView').classList.add('hidden');
+            document.getElementById('focusedView').classList.remove('hidden');
+            
+            loadProductDetails(id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function loadProductDetails(id) {
+            if (!id) return;
+            lastClickedProductId = id; 
+            const item = localCatalog.find(p => p.id == id);
+            if (!item) return;
+
+            const img = document.getElementById('mainImg');
+            img.src = item.url;
+            img.classList.remove('opacity-0');
+            
+            document.getElementById('mainBrand').innerText = item.brand;
+            document.getElementById('mainTitle').innerText = item.title;
+            document.getElementById('mainPrice').innerText = `₹${Number(item.price).toLocaleString('en-IN')}`;
+            document.getElementById('mainColour').innerHTML = `Variant: <span class="font-medium text-zinc-900">${item.colour}</span>`;
+            
+            const roundedRating = Math.round(item.rating);
+            document.getElementById('mainStars').innerText = "★".repeat(roundedRating) + "☆".repeat(5 - roundedRating);
+            document.getElementById('mainRating').innerText = `(${Number(item.rating).toFixed(2)})`;
+
+            try {
+                const res = await fetch(`${API_BASE}/recommendations/${id}`);
+                const recs = await res.json();
+                
+                const recGrid = document.getElementById('recGrid');
+                recGrid.innerHTML = '';
+
+                recs.forEach(r => {
+                    recGrid.innerHTML += `
+                        <div class="bg-white border border-zinc-200 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1 hover:border-zinc-400 group cursor-pointer flex flex-col justify-between shadow-sm" onclick="loadProductDetails(${r.id}); window.scrollTo({ top: 0, behavior: 'smooth' });">
+                            <div>
+                                <div class="w-full aspect-[3/4] bg-zinc-50 rounded-xl overflow-hidden mb-4 flex items-center justify-center">
+                                    <img src="${r.url}" class="object-contain h-full w-full mix-blend-multiply">
+                                </div>
+                                <span class="text-[9px] font-bold tracking-widest uppercase text-zinc-400 block mb-1">${r.brand}</span>
+                                <div class="text-xs font-semibold text-zinc-800 truncate mb-1 group-hover:text-black">${r.title}</div>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-zinc-900 mb-2">₹${Number(r.price).toLocaleString('en-IN')}</div>
+                                <span class="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-medium px-2 py-0.5 rounded">Match: ${(r.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Recs tracking collection broke:", err);
+            }
+        }
+
+        window.onload = initializeCatalog;
+    </script>
+</body>
+</html>
