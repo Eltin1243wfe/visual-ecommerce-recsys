@@ -59,4 +59,4 @@ def get_top_k_recommendations(target_vector, pool_vectors, pool_indices, k=3):
     similarities = cosine_similarity(target, pool)[0]
     top_indices = np.argsort(similarities)[::-1][:k]
     
-    return [(pool_indices[i], float(similarities[i])) for i in top_indices]
+    return [(pool_indices[i], float(similarities[i])) for i in top_indices] 
